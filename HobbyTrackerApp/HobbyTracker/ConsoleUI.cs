@@ -1,6 +1,7 @@
 namespace HobbyTracker;
 
 using System.IO;
+using Spectre.Console;
 
 public class ConsoleUI {
     saveFile filesave;
@@ -10,9 +11,17 @@ public class ConsoleUI {
     }
 
     public void View() {
-        string action = userInput("Please select action (add, edit, archive, remove): ");
 
-        if(action== "add") {
+        var action = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("What would you like to do?")
+            .AddChoices(new[] {
+                "View projects", "Add project", "Edit project", "Archive", 
+                "Remove"
+            }));
+        
+        
+        if(action== "Add project") {
 
             string command;
 
@@ -22,13 +31,23 @@ public class ConsoleUI {
 
                 string projectDetails = userInput("Enter project details: ");
 
-                string projectCategory = userInput("Select project category (Blog idea, Drawing, Short story): ");
+                string projectCategory = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("Please select category")
+                        .AddChoices(new[] {
+                            "Blog idea", "Drawing", "Short story"
+                    }));
 
                 filesave.AppendLine(projectName+" ("+projectCategory+")"+": "+projectDetails);
 
-                command = userInput("Add another project or exit: " );
+                command = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("What would you like to do?")
+                        .AddChoices(new[] {
+                            "Add another project", "Exit"
+                    }));
 
-            } while(command!="exit");
+            } while(command!="Exit");
         }
     }
 
