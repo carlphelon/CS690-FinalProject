@@ -4,50 +4,71 @@ using System.IO;
 using Spectre.Console;
 
 public class ConsoleUI {
-    saveFile filesave;
+    
+    private readonly User loginChoice;
+    private readonly ProjectOrganizer userOrganizer;
 
-    public ConsoleUI() {
-        filesave = new saveFile("project-data.txt");
+    public ConsoleUI(User loginChoice, ProjectOrganizer userOrganizer) {
+        this.loginChoice =loginChoice;
+        this.userOrganizer = userOrganizer;
+
     }
 
     public void View() {
-
-        var action = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-            .Title("What would you like to do?")
-            .AddChoices(new[] {
-                "View projects", "Add project", "Edit project", "Archive", 
-                "Remove"
-            }));
         
-        
-        if(action== "Add project") {
+        while (true) {
+            var action = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("What would you like to do?")
+                .AddChoices(new[] {
+                     "Add project", "View projects", "Edit project", "Archive", 
+                    "Remove", "Exit"
+                }));
+            
+            
+            if(action== "Add project") {
 
-            string command;
+                string command;
 
-            do {
+                do {
 
-                string projectName = userInput("Enter project title: ");
+                    string projectName = userInput("Enter project title: ");
 
-                string projectDetails = userInput("Enter project details: ");
+                    string projectDetails = userInput("Enter project details: ");
 
-                string projectCategory = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("Please select category")
-                        .AddChoices(new[] {
-                            "Blog idea", "Drawing", "Short story"
-                    }));
+                    string projectCategory = AnsiConsole.Prompt(
+                        new SelectionPrompt<string>()
+                            .Title("Please select category")
+                            .AddChoices(new[] {
+                                "Blog idea", "Drawing", "Short story"
+                        }));
 
-                filesave.AppendLine(projectName+" ("+projectCategory+")"+": "+projectDetails);
+                    //add progress.priority,completion date, arbitrary default info
+                    var progress = Progress.notStarted;
+                    var priority = Priority.mediumPriority;
+                    var completionDate = DateTime.Now.AddDays(14);
 
-                command = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("What would you like to do?")
-                        .AddChoices(new[] {
-                            "Add another project", "Exit"
-                    }));
+                    //
+                    var category = new Category(projectCategory);
+                    var newProject = new ProjectData(projectName, projectDetails, category, progress, priority, completionDate, loginChoice);
 
-            } while(command!="Exit");
+                    userOrganizer.saveProject(newProject);
+
+                    command = AnsiConsole.Prompt(
+                        new SelectionPrompt<string>()
+                            .Title("What would you like to do?")
+                            .AddChoices(new[] {
+                                "Add another project", "Exit"
+                        }));
+
+                } while(command!="Exit");
+            } else if(action=="View projects") {
+                
+                userOrganizer.displayALLProjects();
+
+            }else if(action=="Exit"){
+                break;
+            }    
         }
     }
 

@@ -31,13 +31,13 @@ public enum Priority {
 }
 
 public class ProjectData {
-    public string projectName { get; }
-    public string projectDescription { get; }
-    public Category Category { get; }
-    public Progress Progress { get; }
-    public Priority Priority { get; }
-    public DateTime projectCompletionDate { get; }
-    public User User { get; }
+    public string projectName { get; set; }
+    public string projectDescription { get; set; }
+    public Category Category { get; set; }
+    public Progress Progress { get; set; }
+    public Priority Priority { get; set;}
+    public DateTime projectCompletionDate { get; set; }
+    public User User { get; set; }
 
     public ProjectData(string projectname, string projectdescription, Category category, Progress progress, Priority priority, DateTime projectcompletiondate, User user) {
         this.projectName = projectname;
