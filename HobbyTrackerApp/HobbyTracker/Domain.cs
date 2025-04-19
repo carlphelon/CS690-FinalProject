@@ -49,6 +49,6 @@ public class ProjectData {
         this.Priority = priority;
         this.projectCompletionDate = projectcompletiondate;
         this.User = user;
-        //this.isArchived = isarchived;                       add^^^^
+        //this.isArchived = isa rchived;                       add^^^^
     }
 }

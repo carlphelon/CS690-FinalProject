@@ -43,7 +43,7 @@ public class ConsoleUI {
                                 "Blog idea", "Drawing", "Short story"
                         }));
 
-                    //add progress.priority,completion date, arbitrary default info
+                    //add progress.priority,compl etion date, arbitrary default info
                     var progress = Progress.notStarted;
                     var priority = Priority.mediumPriority;
                     var completionDate = DateTime.Now.AddDays(14);
