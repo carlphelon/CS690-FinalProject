@@ -39,6 +39,8 @@ public class ProjectData {
     public DateTime projectCompletionDate { get; set; }
     public User User { get; set; }
 
+    //public bool isArchived { get; set; } = false;
+
     public ProjectData(string projectname, string projectdescription, Category category, Progress progress, Priority priority, DateTime projectcompletiondate, User user) {
         this.projectName = projectname;
         this.projectDescription = projectdescription;
@@ -47,5 +49,6 @@ public class ProjectData {
         this.Priority = priority;
         this.projectCompletionDate = projectcompletiondate;
         this.User = user;
+        //this.isArchived = isa rchived;                       add^^^^
     }
 }
