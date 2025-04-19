@@ -83,7 +83,7 @@ public class ConsoleUI {
                     );
                     userOrganizer.RemoveProject(projectremove);
                 }
-            }else if(action=="Edit") {  
+            }else if(action=="Edit project") {  
                 AnsiConsole.MarkupLine($"[yellow] In Version 2[/]");
 
             }else if(action=="Archive") {  

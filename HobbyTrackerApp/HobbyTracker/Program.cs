@@ -20,7 +20,8 @@ class Program
         User? loginChoice = null;
         ProjectOrganizer? userOrganizer = null;
 
-        //set up sophias projects - store file be tween logins
+        //set up sophias projects - store file be 
+        // tween logins
         if(loginScreen== "Sophia's Projects") {
 
             loginChoice = new User("Sophia");
