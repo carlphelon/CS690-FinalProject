@@ -128,7 +128,7 @@ public class ProjectOrganizer {
     if (projectremove!= null) {
         projects.Remove(projectremove);
         SaveAlltoFile();
-        //AnsiConsole.MarkupLine($"[red]Removed: {pro jecttitle}");
+        //AnsiConsole.MarkupLine($"[red]Removed: {projecttitle}");
     } else {
         AnsiConsole.MarkupLine($"[red]No project found");
     }

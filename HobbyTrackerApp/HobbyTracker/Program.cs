@@ -28,7 +28,7 @@ class Program
             userOrganizer = new ProjectOrganizer("Sophia-Projects.txt");
         
         } else if(loginScreen=="Guest Projects") {  //guest acct setup - temp file
-
+            AnsiConsole.MarkupLine($"[red] Warning: Guest files do not save between logins[/]");
             loginChoice = new User("Guest");
             userOrganizer = new ProjectOrganizer();
         }   
