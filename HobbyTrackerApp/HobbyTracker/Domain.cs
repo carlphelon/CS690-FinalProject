@@ -38,10 +38,10 @@ public class ProjectData {
     public Priority Priority { get; set;}
     public DateTime projectCompletionDate { get; set; }
     public User User { get; set; }
+    
+    public bool isArchived { get; set; } = false;
 
-    //public bool isArchived { get; set; } = false;
-
-    public ProjectData(string projectname, string projectdescription, Category category, Progress progress, Priority priority, DateTime projectcompletiondate, User user) {
+    public ProjectData(string projectname, string projectdescription, Category category, Progress progress, Priority priority, DateTime projectcompletiondate, User user, bool isarchived = false) {
         this.projectName = projectname;
         this.projectDescription = projectdescription;
         this.Category = category;
@@ -49,6 +49,6 @@ public class ProjectData {
         this.Priority = priority;
         this.projectCompletionDate = projectcompletiondate;
         this.User = user;
-        //this.isArchived = isa rchived;                       add^^^^
+        this.isArchived = isarchived;                      
     }
 }

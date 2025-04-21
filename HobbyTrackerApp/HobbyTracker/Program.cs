@@ -17,8 +17,8 @@ class Program
             }));
         
         //initialize variables
-        User? loginChoice = null;
-        ProjectOrganizer? userOrganizer = null;
+        User loginChoice = null;
+        ProjectOrganizer userOrganizer = null;
 
         //set up sophias projects - store file be 
         // tween logins

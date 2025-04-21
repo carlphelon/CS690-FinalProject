@@ -43,10 +43,24 @@ public class ConsoleUI {
                                 "Blog idea", "Drawing", "Short story"
                         }));
 
-                    //add progress.priority,compl etion date, arbitrary default info
-                    var progress = Progress.notStarted;
-                    var priority = Priority.mediumPriority;
-                    var completionDate = DateTime.Now.AddDays(14);
+                    
+                    var progress = AnsiConsole.Prompt(
+                        new SelectionPrompt<Progress>()
+                            .Title("Please select progress")
+                            .AddChoices(Enum.GetValues<Progress>())
+                            );
+                              
+                    var priority =AnsiConsole.Prompt(
+                        new SelectionPrompt<Priority>()
+                            .Title("Please select priority")
+                            .AddChoices(Enum.GetValues<Priority>())
+                            );
+                    string userDate = userInput("Enter a target completion date (MM/DD/YYY) or enter to skip").Trim();
+                    DateTime completionDate;
+                    if (!DateTime.TryParse(userDate, out completionDate)) {
+                            completionDate = DateTime.Now.AddDays(365);
+                            AnsiConsole.MarkupLine("[darkorange]No date entered, default to 365 days [/]");
+                    }
 
                     //
                     var category = new Category(projectCategory);
@@ -62,6 +76,7 @@ public class ConsoleUI {
                         }));
 
                 } while(command!="Exit");
+
             } else if(action=="View projects") {
                 
                 FilterProjects();
@@ -84,10 +99,28 @@ public class ConsoleUI {
                     userOrganizer.RemoveProject(projectremove);
                 }
             }else if(action=="Edit project") {  
-                AnsiConsole.MarkupLine($"[yellow] In Version 2[/]");
+                EditProject();
 
             }else if(action=="Archive") {  
-                AnsiConsole.MarkupLine($"[yellow] In Version 2[/]");
+                var projectList = userOrganizer.GetAllProjects().Where(p => !p.isArchived).ToList();
+
+                if(projectList.Count() == 0) {
+                    AnsiConsole.MarkupLine($"[yellow]No projects are available[/]");
+                } else {
+                    var projectToarchive = AnsiConsole.Prompt(
+                        new SelectionPrompt<string>()
+                            .Title("Select project to archive:")
+                            .AddChoices(projectList.Select(p => p.projectName))
+                    );
+
+                    var project = projectList.FirstOrDefault(p => p.projectName == projectToarchive);
+
+                    if(project != null) {
+                        project.isArchived = true;
+                        userOrganizer.SaveAlltoFile();
+                        AnsiConsole.MarkupLine($"[green]{project.projectName} was archived[/]");
+                    }  
+                }
 
             }else if(action=="Exit"){
                 break;
@@ -99,7 +132,7 @@ public class ConsoleUI {
             var filterChoice = AnsiConsole.Prompt (
                 new SelectionPrompt<string>()
                 .Title("Select the view you would like to see:")
-                .AddChoices(new[] {"All projects", "By category", "By priority", "By progress"}));
+                .AddChoices(new[] {"All projects", "By category", "By priority", "By progress", "Archived"}));
             
             List<ProjectData> filteredProjects = new List<ProjectData>();
 
@@ -121,9 +154,12 @@ public class ConsoleUI {
                         .Title("Select priority:") 
                         .AddChoices(Enum.GetNames(typeof(Priority)))); 
                 filteredProjects = userOrganizer.FilterByPriority(priorityFilter);
-            }  else if (filterChoice == "All projects")  { 
+            } else if (filterChoice == "Archived") {
+                filteredProjects = userOrganizer.GetAllProjects().Where(p => p.isArchived).ToList();
+            } else if (filterChoice == "All projects")  { 
                 filteredProjects = userOrganizer.GetAllProjects(); 
             } 
+            
             if (filteredProjects.Count > 0)  { 
                 userOrganizer.projectTableformatting(filteredProjects); 
             } else { 
@@ -136,4 +172,80 @@ public class ConsoleUI {
         Console.WriteLine(message);
         return Console.ReadLine();
     }
-}
+
+    public void EditProject() {
+
+        var listofprojects = userOrganizer.GetAllProjects()
+            .Select(p => p.projectName)
+            .Distinct()
+            .ToList();
+
+         if(listofprojects.Count() == 0) {
+                    AnsiConsole.MarkupLine($"[yellow]No projects are available[/]");
+                    return;
+                } else {
+                    
+                        var projectToedit = AnsiConsole.Prompt(
+                            new SelectionPrompt<string>()
+                                .Title("Select project to edit:")
+                                .AddChoices(listofprojects)
+                        );
+
+                        var project = userOrganizer.GetAllProjects().FirstOrDefault(p => p.projectName == projectToedit);
+
+
+                        if(project!=null) {
+                            string field;
+                            do {
+                                //Select field to edit
+                                field = AnsiConsole.Prompt(
+                                    new SelectionPrompt<string>()
+                                    .Title("Select field to edit:")
+                                    .AddChoices(new[] { "Project Name", "Description", "Category", "Progress", "Priority", "Target completion date", "Exit" })
+                                );
+                            
+                                if (field=="Project Name") {
+                                    //Edit name
+                                    string newname = userInput($"Current name: {project.projectName}. Enter new name or press enter to skip");
+                                    if (!string.IsNullOrEmpty(newname)) {
+                                        project.projectName = newname;
+                                    }
+                                }else if(field == "Description") {
+                                    string newdescription = userInput($"Current description: {project.projectDescription}. Enter new description or press enter to skip");
+                                    if (!string.IsNullOrEmpty(newdescription)) {
+                                        project.projectDescription = newdescription;
+                                    }
+                                }else if(field == "Category") {
+                                    string newcategory = AnsiConsole.Prompt(
+                                        new SelectionPrompt<string>()
+                                        .Title($"Current category: {project.Category.projectCategory}. Select new category")
+                                        .AddChoices(new[] {"Blog idea", "Drawing", "Short story"}));
+                                    project.Category= new Category(newcategory);
+
+                                }else if(field == "Progress") {
+                                    var newprogress = AnsiConsole.Prompt(
+                                        new SelectionPrompt<Progress>()
+                                        .Title($"Current progress: . Select new status")
+                                        .AddChoices(Enum.GetValues<Progress>())
+                                        );
+                                    project.Progress= newprogress;  
+                                }else if(field == "Priority") {
+                                    var newpriority = AnsiConsole.Prompt(
+                                        new SelectionPrompt<Priority>()
+                                        .Title($"Current priority: {project.Priority}. Select new status")
+                                        .AddChoices(Enum.GetValues<Priority>()));
+                                    project.Priority= newpriority;
+                                }else if(field == "Target completion date") {
+                                    string userdate = userInput($"Current target date: {project.projectCompletionDate.ToShortDateString()}. Enter new date (MM/DD/YYYY) or press enter to skip:");
+                                    if(!string.IsNullOrEmpty(userdate)) {
+                                        if (DateTime.TryParse(userdate, out DateTime newdate)) {
+                                            project.projectCompletionDate = newdate;
+                                        }else {
+                                            AnsiConsole.MarkupLine($"[red]Invalid format[/]");
+                                        }
+                                    }              
+                                }
+                            } while (field!= "Exit") ; 
+
+    }}}}
+  

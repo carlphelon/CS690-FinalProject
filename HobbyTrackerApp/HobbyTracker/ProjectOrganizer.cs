@@ -42,9 +42,9 @@ public class ProjectOrganizer {
             var progress = Enum.Parse<Progress>(sections[3].Trim());
             var priority = Enum.Parse<Priority>(sections[4].Trim());
             var completionDate = DateTime.Parse(sections[5].Trim());
-            // var isArchived = bool.Parse(sections[6]);             update below
+            var isArchived = sections.Length > 6 && bool.TryParse(sections[6].Trim(), out bool parsed) ? parsed : false;    
 
-            var project = new ProjectData(projectName, projectDescription, category, progress, priority, completionDate, new User("Sophia"));
+            var project = new ProjectData(projectName, projectDescription, category, progress, priority, completionDate, new User("Sophia"), isArchived);
             projects.Add(project);
         }
     }
@@ -58,7 +58,8 @@ public class ProjectOrganizer {
         project.Category.projectCategory,
         project.Progress.ToString(),
         project.Priority.ToString(),
-        project.projectCompletionDate.ToShortDateString()
+        project.projectCompletionDate.ToShortDateString(),
+        project.isArchived.ToString()
     });
 
     File.AppendAllText(file, projectLines + Environment.NewLine);
@@ -128,13 +129,13 @@ public class ProjectOrganizer {
     if (projectremove!= null) {
         projects.Remove(projectremove);
         SaveAlltoFile();
-        //AnsiConsole.MarkupLine($"[red]Removed: {projecttitle}");
+        AnsiConsole.MarkupLine($"[red]Removed: {projecttitle} [/]");
     } else {
-        AnsiConsole.MarkupLine($"[red]No project found");
+        AnsiConsole.MarkupLine($"[red]No project found [/]");
     }
     }
 
-    private void SaveAlltoFile() {
+    public void SaveAlltoFile() {
         var alllines = projects.Select(p=> string.Join(Delimiter, new[] {
             p.projectName, 
             p.projectDescription,
