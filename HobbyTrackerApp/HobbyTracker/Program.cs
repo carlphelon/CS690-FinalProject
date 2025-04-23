@@ -22,19 +22,25 @@ class Program
 
         //set up sophias projects - store file be 
         // tween logins
-        if(loginScreen== "Sophia's Projects") {
-
-            loginChoice = new User("Sophia");
-            var storage = new ProjectCollection("Sophia-Projects.txt");
-            userOrganizer = new ProjectOrganizer(storage);
         
-        } else if(loginScreen=="Guest Projects") {  //guest acct setup - temp file
+        switch(loginScreen) {
 
-            loginChoice = new User("Guest");
-            var storage = new ProjectCollection("Guest-Projects.txt");
-            userOrganizer = new ProjectOrganizer(storage);
-        }   
+            case "Sophia's Projects":
+            
+                loginChoice = new User("Sophia");
+                var sophiaStorage = new ProjectCollection("Sophia-Projects.txt");
+                userOrganizer = new ProjectOrganizer(sophiaStorage);
+                break;
+
+            case "Guest Projects":
+
+                loginChoice = new User("Guest");
+                var guestStorage = new ProjectCollection("Guest-Projects.txt");
+                userOrganizer = new ProjectOrganizer(guestStorage);
+                break;
+        }
         
+
         ConsoleUI appUI = new ConsoleUI(loginChoice,userOrganizer);
         appUI.View();
     

@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-public class ProjectCollection: iprojectCollection {
+public class ProjectCollection: IProjectCollection {
 
     private readonly string file;
     private const string Delimiter = "|||";
@@ -18,7 +18,9 @@ public class ProjectCollection: iprojectCollection {
 
         var projects = new List<ProjectData>();
 
-        if (!File.Exists(file)) return projects;
+        if (!File.Exists(file)) {
+            return projects;
+        }
         
         var filelines=File.ReadAllLines(file);
         
@@ -52,13 +54,13 @@ public class ProjectCollection: iprojectCollection {
         foreach(var p in projects) {
 
             projectLines.Add(string.Join(Delimiter, new[] {
-                p.projectName, 
-                p.projectDescription,
-                p.Category.projectCategory,
+                p.ProjectName, 
+                p.ProjectDescription,
+                p.Category.ProjectCategory,
                 p.Progress.ToString(),
                 p.Priority.ToString(),
-                p.projectCompletionDate.ToShortDateString(),
-                p.isArchived.ToString()
+                p.ProjectCompletionDate.ToShortDateString(),
+                p.IsArchived.ToString()
             }));
         }
         File.WriteAllLines(file, projectLines);     
@@ -67,13 +69,13 @@ public class ProjectCollection: iprojectCollection {
     public void SaveONEProject(ProjectData p) {
         
         var projectLines= string.Join(Delimiter, new[] {
-                p.projectName, 
-                p.projectDescription,
-                p.Category.projectCategory,
+                p.ProjectName, 
+                p.ProjectDescription,
+                p.Category.ProjectCategory,
                 p.Progress.ToString(),
                 p.Priority.ToString(),
-                p.projectCompletionDate.ToShortDateString(),
-                p.isArchived.ToString()
+                p.ProjectCompletionDate.ToShortDateString(),
+                p.IsArchived.ToString()
             });       
         File.AppendAllText(file, projectLines + Environment.NewLine); 
     }
