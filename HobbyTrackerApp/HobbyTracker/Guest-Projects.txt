@@ -1,3 +1,4 @@
-sdfg|||sdfg|||Short story|||NotStarted|||LowPriority|||04/23/2026|||False
-dfg|||dfg|||Blog idea|||NotStarted|||MediumPriority|||04/23/2026|||False
-zxcv|||sdfg.|||Drawing|||Started|||MediumPriority|||04/23/2026|||True
+Outlander|||Scotland 1945|||Short story|||Finished|||LowPriority|||04/27/2025|||False
+Lemon|||Realistic lemon|||Drawing|||NotStarted|||MediumPriority|||04/23/2026|||False
+Dinners|||Parm, taco, ceasar salad|||Blog idea|||Started|||HighPriority|||05/10/2025|||False
+archive|||archive this one|||Drawing|||InProgress|||LowPriority|||04/23/2026|||True

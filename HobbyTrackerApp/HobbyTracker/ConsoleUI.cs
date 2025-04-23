@@ -162,6 +162,8 @@ private void AddProjectService() {
             .Title("Select a project to remove:")
             .AddChoices(projectList.Select(p => p.ProjectName))
         );
+
+        userOrganizer.RemoveProject(projectToRemove);
     }      
     public static string userInput(string message) {
         Console.WriteLine(message);
