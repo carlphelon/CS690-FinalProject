@@ -17,20 +17,22 @@ class Program
             }));
         
         //initialize variables
-        User loginChoice = null;
-        ProjectOrganizer userOrganizer = null;
+        User? loginChoice = null;
+        ProjectOrganizer? userOrganizer = null;
 
         //set up sophias projects - store file be 
         // tween logins
         if(loginScreen== "Sophia's Projects") {
 
             loginChoice = new User("Sophia");
-            userOrganizer = new ProjectOrganizer("Sophia-Projects.txt");
+            var storage = new ProjectCollection("Sophia-Projects.txt");
+            userOrganizer = new ProjectOrganizer(storage);
         
         } else if(loginScreen=="Guest Projects") {  //guest acct setup - temp file
-            AnsiConsole.MarkupLine($"[red] Warning: Guest files do not save between logins[/]");
+
             loginChoice = new User("Guest");
-            userOrganizer = new ProjectOrganizer();
+            var storage = new ProjectCollection("Guest-Projects.txt");
+            userOrganizer = new ProjectOrganizer(storage);
         }   
         
         ConsoleUI appUI = new ConsoleUI(loginChoice,userOrganizer);

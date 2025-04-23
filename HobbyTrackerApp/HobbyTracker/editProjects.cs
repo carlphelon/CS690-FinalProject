@@ -34,9 +34,10 @@ public class EditingService {
 
             var project = projectorganizer.GetAllProjects().FirstOrDefault(p => p.projectName == projectToedit);
 
-
             if(project!=null) {
+                
                 string field;
+                    
                     do {
                      
                         field = AnsiConsole.Prompt(

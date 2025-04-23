@@ -50,5 +50,5 @@ public class ProjectData {
         this.projectCompletionDate = projectcompletiondate;
         this.User = user;
         this.isArchived = isarchived;                      
-    }
+    }   
 }

@@ -6,66 +6,24 @@ using System;
 using System.Collections.Generic;
 
 public class ProjectOrganizer {
-    //initialize variables
-    private readonly string file;
+    
     private List<ProjectData> projects;
-    private const string Delimiter = "|||";
+    private readonly iprojectCollection storage;
 
-    //create organizer and pull from file
-    public ProjectOrganizer(string file) {
-        this.file=file;
-        this.projects= new List<ProjectData>();
-        
-        LoadfromFile();
-    }
-
-    public ProjectOrganizer() : this("Guest-Project.txt") {}
-
-    private void LoadfromFile() {
-
-        //problem handle
-        if (!File.Exists(file)) return;
-        
-        var filelines=File.ReadAllLines(file);
-        
-        foreach (var line in filelines) {
-            var sections = line.Split(Delimiter);
-            
-            //add skip for malformed lines
-            if (sections.Length <6) {
-                AnsiConsole.MarkupLine($"[red]Skipping malformed line: {line}[/]");
-                continue;
-            }
-            var projectName = sections[0];
-            var projectDescription = sections[1].Trim();
-            var category =  new Category(sections[2].Trim());
-            var progress = Enum.Parse<Progress>(sections[3].Trim());
-            var priority = Enum.Parse<Priority>(sections[4].Trim());
-            var completionDate = DateTime.Parse(sections[5].Trim());
-            var isArchived = sections.Length > 6 && bool.TryParse(sections[6].Trim(), out bool parsed) ? parsed : false;    
-
-            var project = new ProjectData(projectName, projectDescription, category, progress, priority, completionDate, new User("Sophia"), isArchived);
-            projects.Add(project);
-        }
+    public ProjectOrganizer(iprojectCollection storage) {
+        this.storage=storage;
+        this.projects= storage.LoadProjects();
     }
 
     public void saveProject(ProjectData project) {
-    
-    //add isacrchived                    at end 
-    var projectLines = string.Join(Delimiter, new[] {
-        project.projectName, 
-        project.projectDescription,
-        project.Category.projectCategory,
-        project.Progress.ToString(),
-        project.Priority.ToString(),
-        project.projectCompletionDate.ToShortDateString(),
-        project.isArchived.ToString()
-    });
-
-    File.AppendAllText(file, projectLines + Environment.NewLine);
-    projects.Add(project);
+        storage.SaveONEProject(project);
+        projects.Add(project);
     }
 
+    public void SaveAlltoFile() {
+        storage.SaveAllProjects(projects);
+    }
+    
     public void displayALLProjects() {
         if (projects.Count== 0) {
             AnsiConsole.MarkupLine("[yellow]No projects to display.[/]");
@@ -134,21 +92,6 @@ public class ProjectOrganizer {
         AnsiConsole.MarkupLine($"[red]No project found [/]");
     }
     }
-
-    public void SaveAlltoFile() {
-        var alllines = projects.Select(p=> string.Join(Delimiter, new[] {
-            p.projectName, 
-            p.projectDescription,
-            p.Category.projectCategory,
-            p.Progress.ToString(),
-            p.Priority.ToString(),
-            p.projectCompletionDate.ToShortDateString()
-    })
-    );
-        File.WriteAllLines(file, alllines);
-    }
 }
-
-
 
 
