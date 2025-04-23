@@ -1,21 +1,22 @@
 namespace HobbyTracker;
 
 using Spectre.Console;
-using System.IO;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 
-public class ProjectOrganizer {
-    
-    private List<ProjectData> projects;
-    private readonly iprojectCollection storage;
+public class ProjectOrganizer { 
 
-    public ProjectOrganizer(iprojectCollection storage) {
-        this.storage=storage;
-        this.projects= storage.LoadProjects();
-    }
+    private List<ProjectData> projects; 
+    private readonly IProjectCollection storage;
 
-    public void saveProject(ProjectData project) {
+        public ProjectOrganizer(IProjectCollection storage) {
+        
+            this.storage=storage;
+            projects= storage.LoadProjects();
+        }
+
+    public void SaveProject(ProjectData project) {
         storage.SaveONEProject(project);
         projects.Add(project);
     }
@@ -24,8 +25,10 @@ public class ProjectOrganizer {
         storage.SaveAllProjects(projects);
     }
     
-    public void displayALLProjects() {
+    public void DisplayALLProjects() {
+        
         if (projects.Count== 0) {
+            
             AnsiConsole.MarkupLine("[yellow]No projects to display.[/]");
             return;
         }
@@ -37,27 +40,23 @@ public class ProjectOrganizer {
     } 
 
     public List<ProjectData> FilterByCategory(string category) { 
-        return projects.Where(p => p.Category.projectCategory == category).ToList(); 
+        return projects.Where(p => p.Category.ProjectCategory == category).ToList(); 
     } 
 
     public List<ProjectData> FilterByPriority(string priority) { 
         return projects.Where(p => p.Priority.ToString() == priority).ToList(); 
     } 
 
-    public List<ProjectData> GetAllProjects() { 
-        return new List<ProjectData>(projects);
-
-    } 
+    public List<ProjectData> GetAllProjects() => new(projects);
     
-
     //clean formatting of project display
-    public void projectTableformatting(List<ProjectData> listofprojects, string tabletitle = "See your projects below" ) {
-        //maybe make this its own codespace in next version:)
+    public void projectTableformatting(List<ProjectData> listofprojects, string tableTitle = "[bold]See your projects below[/]" ) {
 
         //initialize table
-        var table = new Table();
-        table.Border(TableBorder.Square);
-        table.Title = new TableTitle(tabletitle);
+        var table = new Table() {
+            Border = TableBorder.Square,
+            Title = new TableTitle(tableTitle)
+        };
 
         //build out table
         table.AddColumn("[bold]Project Title[/]");
@@ -66,28 +65,30 @@ public class ProjectOrganizer {
         table.AddColumn("Priority");
         table.AddColumn("Target Completion Date");
         table.AddColumn("Description");
-        //table.AddColumn("Archived");                  ver2
+        table.AddColumn("Archived");                  
 
         foreach (var project in listofprojects) {
+            
             table.AddRow(
-                $"[bold]{project.projectName}[/]",
-                project.Category?.projectCategory ?? "N/A",
+                $"[bold]{project.ProjectName}[/]",
+                project.Category?.ProjectCategory ?? "N/A",
                 project.Progress.ToString(),
                 project.Priority.ToString(),
-                project.projectCompletionDate.ToShortDateString(),
-                project.projectDescription ?? ""
+                project.ProjectCompletionDate.ToShortDateString(),
+                project.ProjectDescription ?? "",
+                project.IsArchived ? "Yes" : "No"
             );
         }
         AnsiConsole.Write(table);
     }
 
-    public void RemoveProject(string projecttitle) {
-        var projectremove = projects.FirstOrDefault(p => p.projectName.Equals(projecttitle, StringComparison.OrdinalIgnoreCase));
+    public void RemoveProject(string projectTitle) {
+        var projectToRemove = projects.FirstOrDefault(p => p.ProjectName.Equals(projectTitle, StringComparison.OrdinalIgnoreCase));
 
-    if (projectremove!= null) {
-        projects.Remove(projectremove);
+    if (projectToRemove!= null) {
+        projects.Remove(projectToRemove);
         SaveAlltoFile();
-        AnsiConsole.MarkupLine($"[red]Removed: {projecttitle} [/]");
+        AnsiConsole.MarkupLine($"[red]Removed: {projectTitle} [/]");
     } else {
         AnsiConsole.MarkupLine($"[red]No project found [/]");
     }

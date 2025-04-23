@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-public class ProjectCollection: iprojectCollection {
+public class ProjectCollection: IProjectCollection {
     
     public List<ProjectData> savedprojects = new();
     public bool saveallcalled = false;

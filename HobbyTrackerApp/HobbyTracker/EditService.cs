@@ -3,68 +3,68 @@ using Spectre.Console;
 using System;
 using System.Collections.Generic;
 
-public class editOptions {
-    public string? newName { get; set;}
-    public string? newDescription { get; set;}
-    public string? newCategory { get; set;}
-    public Progress? newProgress { get; set;}
-    public Priority? newPriority { get; set;}
-    public DateTime? newprojectCompletionDate { get; set;}
+public class EditOptions {
+    public string? NewName { get; set;}
+    public string? NewDescription { get; set;}
+    public string? NewCategory { get; set;}
+    public Progress? NewProgress { get; set;}
+    public Priority? NewPriority { get; set;}
+    public DateTime? NewProjectCompletionDate { get; set;}
 }
         
 public class EditingService {
     
-    private readonly ProjectOrganizer? projectorganizer;
+    private readonly ProjectOrganizer projectOrganizer;
 
-    public EditingService(ProjectOrganizer? projectOrganizer) {
+    public EditingService(ProjectOrganizer projectOrganizer) {
         
-        projectorganizer = projectOrganizer ??  throw new ArgumentNullException(nameof(projectOrganizer));
+        this.projectOrganizer = projectOrganizer ??  throw new ArgumentNullException(nameof(projectOrganizer));
 
     }
 
-    public void ApplyEdit(ProjectData project, editOptions options) {
+    public void ApplyEdit(ProjectData project, EditOptions options) {
 
-        if (!string.IsNullOrWhiteSpace(options.newName)) {
-            project.projectName = options.newName;
+        if (!string.IsNullOrWhiteSpace(options.NewName)) {
+            project.ProjectName = options.NewName;
         }
-        if (!string.IsNullOrWhiteSpace(options.newDescription)) {
-            project.projectDescription = options.newDescription;
+        if (!string.IsNullOrWhiteSpace(options.NewDescription)) {
+            project.ProjectDescription = options.NewDescription;
         }
-        if (!string.IsNullOrWhiteSpace(options.newCategory)) {
-            project.Category = new Category(options.newCategory);
+        if (!string.IsNullOrWhiteSpace(options.NewCategory)) {
+            project.Category = new Category(options.NewCategory);
         }
-        if (options.newProgress.HasValue) {
-            project.Progress = options.newProgress.Value;
+        if (options.NewProgress.HasValue) {
+            project.Progress = options.NewProgress.Value;
         }
-        if (options.newPriority.HasValue) {
-            project.Priority = options.newPriority.Value;
+        if (options.NewPriority.HasValue) {
+            project.Priority = options.NewPriority.Value;
         }
-        if (options.newprojectCompletionDate.HasValue) {
-            project.projectCompletionDate = options.newprojectCompletionDate.Value;
+        if (options.NewProjectCompletionDate.HasValue) {
+            project.ProjectCompletionDate = options.NewProjectCompletionDate.Value;
         }
 
     }
 
     public void EditProject() {
 
-        var listofprojects = projectorganizer.GetAllProjects()
-            .Select(p => p.projectName)
+        var listofProjects = projectOrganizer.GetAllProjects()
+            .Select(p => p.ProjectName)
             .Distinct()
             .ToList();
 
-        if(listofprojects.Count() == 0) {
+        if(listofProjects.Count() == 0) {
             AnsiConsole.MarkupLine($"[yellow]No projects are available[/]");
             return;
         
         } else {
                     
-            var projectToedit = AnsiConsole.Prompt(
+            var projectToEdit = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("Select project to edit:")
-                    .AddChoices(listofprojects)
+                    .AddChoices(listofProjects)
             );
 
-            var project = projectorganizer.GetAllProjects().FirstOrDefault(p => p.projectName == projectToedit);
+            var project = projectOrganizer.GetAllProjects().FirstOrDefault(p => p.ProjectName == projectToEdit);
 
             if(project!=null) {
                 
@@ -75,30 +75,30 @@ public class EditingService {
                         field = AnsiConsole.Prompt(
                             new SelectionPrompt<string>()
                                 .Title("Select field to edit:")
-                                .AddChoices(new[] { "Project Name", "Description", "Category", "Progress", "Priority", "Target completion date", "Exit" })
+                                .AddChoices(new[] { "Project Name", "Description", "Category", "Progress", "Priority", "Target Completion Date", "Done" })
                         );
                             
                         if (field=="Project Name") {
                             
-                            string newname = userInput($"Current name: {project.projectName}. Enter new name or press enter to skip");
+                            string? newname = userInput($"Current name: {project.ProjectName}. Enter new name or press enter to skip");
                             if (!string.IsNullOrEmpty(newname)) {
                                 
-                                project.projectName = newname;
+                                project.ProjectName = newname;
                             }
 
                         }else if(field == "Description") {
                             
-                            string newdescription = userInput($"Current description: {project.projectDescription}. Enter new description or press enter to skip");
+                            string? newdescription = userInput($"Current description: {project.ProjectDescription}. Enter new description or press enter to skip");
                             if (!string.IsNullOrEmpty(newdescription)) {
                                 
-                                project.projectDescription = newdescription;
+                                project.ProjectDescription = newdescription;
                             }
                                 
                         }else if(field == "Category") {
                                     
                             var newcategory = AnsiConsole.Prompt(
                                 new SelectionPrompt<string>()
-                                    .Title($"Current category: {project.Category.projectCategory}. Select new category")
+                                    .Title($"Current category: {project.Category.ProjectCategory}. Select new category")
                                     .AddChoices(new[] {"Blog idea", "Drawing", "Short story"})
                             );
                                     
@@ -124,24 +124,24 @@ public class EditingService {
                             
                             project.Priority= newpriority;
                                 
-                        }else if(field == "Target completion date") {
+                        }else if(field == "Target Completion Date") {
                                     
-                            string userdate = userInput($"Current target date: {project.projectCompletionDate.ToShortDateString()}. Enter new date (MM/DD/YYYY) or press enter to skip:");
+                            string? userdate = userInput($"Current target date: {project.ProjectCompletionDate.ToShortDateString()}. Enter new date (MM/DD/YYYY) or press enter to skip:");
                                 if(!string.IsNullOrEmpty(userdate)) {
                                 if (DateTime.TryParse(userdate, out DateTime newdate)) {
-                                    project.projectCompletionDate = newdate;
+                                    project.ProjectCompletionDate = newdate;
                                         }else {
                                             AnsiConsole.MarkupLine($"[red]Invalid format[/]");
                                         }
                                     }              
                                 }
-                            } while (field!= "Exit") ; 
-                projectorganizer.SaveAlltoFile();
-                AnsiConsole.MarkupLine($"[green]{project.projectName} was updated and saved [/]");
+                            } while (field!= "Done") ; 
+                projectOrganizer.SaveAlltoFile();
+                AnsiConsole.MarkupLine($"[green]{project.ProjectName} was updated and saved [/]");
             }
         }
     }
-    public static string userInput(string message) {
+    public static string? userInput(string message) {
         Console.WriteLine(message);
         return Console.ReadLine();
     }
