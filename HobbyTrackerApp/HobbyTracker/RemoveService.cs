@@ -6,9 +6,11 @@ using System.Linq;
 public class RemoveService {
 
     private readonly ProjectOrganizer projectOrganizer;
+    private readonly User loginChoice;
 
-    public RemoveService(ProjectOrganizer projectOrganizer) {
+    public RemoveService(ProjectOrganizer projectOrganizer, User loginChoice) {
         this.projectOrganizer = projectOrganizer;
+        this.loginChoice = loginChoice;
     }
 
     public void RemoveProject() {
@@ -28,6 +30,6 @@ public class RemoveService {
         );
 
         projectOrganizer.RemoveProject(projectToRemove);
-        AnsiConsole.MarkupLine($"[red]{projectToRemove} was removed [/]");
+        
     }     
 }

@@ -6,8 +6,11 @@ using System.Linq;
 public class ArchiveService {
 
     private readonly ProjectOrganizer projectOrganizer;
-    public ArchiveService(ProjectOrganizer projectOrganizer) {
+    private readonly User? loginChoice;
+
+    public ArchiveService(ProjectOrganizer projectOrganizer, User loginChoice) {
         this.projectOrganizer = projectOrganizer;
+        this.loginChoice = loginChoice;
     }
 
     public void ArchiveProject() {

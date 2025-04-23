@@ -37,6 +37,7 @@ public class ConsoleUI {
             switch(action) {
 
                 case "Add project":
+                    var addService = new AddService(userOrganizer, loginChoice);
                     addService.AddProject();
                     break;
 
@@ -49,10 +50,12 @@ public class ConsoleUI {
                     break;
 
                 case "Archive":
+                    var archiveService = new ArchiveService(userOrganizer, loginChoice);
                     archiveService.ArchiveProject();
                     break;
                 
                 case "Remove":
+                    var removeService = new RemoveService(userOrganizer, loginChoice);
                     removeService.RemoveProject();
                     break;
                 
