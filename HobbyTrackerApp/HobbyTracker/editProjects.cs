@@ -3,6 +3,15 @@ using Spectre.Console;
 using System;
 using System.Collections.Generic;
 
+public class editOptions {
+    public string? newName { get; set;}
+    public string? newDescription { get; set;}
+    public string? newCategory { get; set;}
+    public Progress? newProgress { get; set;}
+    public Priority? newPriority { get; set;}
+    public DateTime? newprojectCompletionDate { get; set;}
+}
+        
 public class EditingService {
     
     private readonly ProjectOrganizer? projectorganizer;
@@ -10,6 +19,29 @@ public class EditingService {
     public EditingService(ProjectOrganizer? projectOrganizer) {
         
         projectorganizer = projectOrganizer ??  throw new ArgumentNullException(nameof(projectOrganizer));
+
+    }
+
+    public void ApplyEdit(ProjectData project, editOptions options) {
+
+        if (!string.IsNullOrWhiteSpace(options.newName)) {
+            project.projectName = options.newName;
+        }
+        if (!string.IsNullOrWhiteSpace(options.newDescription)) {
+            project.projectDescription = options.newDescription;
+        }
+        if (!string.IsNullOrWhiteSpace(options.newCategory)) {
+            project.Category = new Category(options.newCategory);
+        }
+        if (options.newProgress.HasValue) {
+            project.Progress = options.newProgress.Value;
+        }
+        if (options.newPriority.HasValue) {
+            project.Priority = options.newPriority.Value;
+        }
+        if (options.newprojectCompletionDate.HasValue) {
+            project.projectCompletionDate = options.newprojectCompletionDate.Value;
+        }
 
     }
 

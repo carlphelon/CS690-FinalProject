@@ -24,11 +24,10 @@ public class ConsoleUI {
                 new SelectionPrompt<string>()
                 .Title("What would you like to do?")
                 .AddChoices(new[] {
-                     "Add project", "View projects", "Edit project", "Archive", 
-                    "Remove", "Exit"
-                }));
-            
-            
+                    "Add project", "View projects", "Edit project", "Archive", "Remove", "Exit"
+                })
+            );
+                        
             if(action== "Add project") {
 
                 string command;
@@ -44,28 +43,33 @@ public class ConsoleUI {
                             .Title("Please select category")
                             .AddChoices(new[] {
                                 "Blog idea", "Drawing", "Short story"
-                        }));
-
-                    
+                            }
+                        )
+                    );
+                   
                     var progress = AnsiConsole.Prompt(
                         new SelectionPrompt<Progress>()
                             .Title("Please select progress")
-                            .AddChoices(Enum.GetValues<Progress>())
-                            );
+                            .AddChoices(Enum.GetValues<Progress>()
+                        )
+                    );
                               
                     var priority =AnsiConsole.Prompt(
                         new SelectionPrompt<Priority>()
                             .Title("Please select priority")
-                            .AddChoices(Enum.GetValues<Priority>())
-                            );
+                            .AddChoices(Enum.GetValues<Priority>()
+                        )
+                    );
+                    
                     string userDate = userInput("Enter a target completion date (MM/DD/YYY) or enter to skip").Trim();
+                    
                     DateTime completionDate;
+                    
                     if (!DateTime.TryParse(userDate, out completionDate)) {
                             completionDate = DateTime.Now.AddDays(365);
                             AnsiConsole.MarkupLine("[darkorange]No date entered, default to 365 days [/]");
-                    }
+                        }
 
-                    //
                     var category = new Category(projectCategory);
                     var newProject = new ProjectData(projectName, projectDetails, category, progress, priority, completionDate, loginChoice);
 
@@ -83,7 +87,6 @@ public class ConsoleUI {
             } else if(action=="View projects") {
                 filteringService.Showfilteredprojects();
                  
-
             } else if(action=="Remove") {
                 var projectitles = userOrganizer.GetAllProjects()
                     .Select(p => p.projectName)
@@ -101,6 +104,7 @@ public class ConsoleUI {
                     );
                     userOrganizer.RemoveProject(projectremove);
                 }
+
             }else if(action=="Edit project") {  
                 editingService.EditProject();
 
@@ -113,7 +117,8 @@ public class ConsoleUI {
                     var projectToarchive = AnsiConsole.Prompt(
                         new SelectionPrompt<string>()
                             .Title("Select project to archive:")
-                            .AddChoices(projectList.Select(p => p.projectName))
+                            .AddChoices(projectList.Select(p => p.projectName)
+                        )
                     );
 
                     var project = projectList.FirstOrDefault(p => p.projectName == projectToarchive);

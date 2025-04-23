@@ -9,8 +9,16 @@ public class FilteringService {
 
     public FilteringService(ProjectOrganizer? projectOrganizer) {
         
-        projectorganizer = projectOrganizer;
+        this.projectorganizer = projectOrganizer;
     }
+
+    public List<ProjectData> FilterByProgress(string progress) => projectorganizer.FilterByProgress(progress);
+    public List<ProjectData> FilterByCategory(string category) => projectorganizer.FilterByCategory(category);
+    public List<ProjectData> FilterByPriority(string priority) => projectorganizer.FilterByPriority(priority);
+    public List<ProjectData> GetArchived(string progress) => projectorganizer.FilterByProgress(progress);
+    public List<ProjectData> FilterByProgress() => projectorganizer.GetAllProjects().Where(p => p.isArchived).ToList();
+    public List<ProjectData> GetAllProjects() => projectorganizer.GetAllProjects();
+
 
     public void Showfilteredprojects() {
         

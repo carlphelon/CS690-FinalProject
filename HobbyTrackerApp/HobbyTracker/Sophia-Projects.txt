@@ -1,2 +1,3 @@
-Outlander|||Claire time travled in Scotlans|||Short story|||notStarted|||mediumPriority|||05/03/2025
-Pickle blob|||Add pickle the dino into the blob universe|||Drawing|||notStarted|||mediumPriority|||05/03/2025
+Outlander|||Claire time travled in Scotlans|||Short story|||notStarted|||mediumPriority|||05/03/2025|||False
+Pickle blob|||Add pickle the dino into the blob universe|||Drawing|||notStarted|||mediumPriority|||05/03/2025|||False
+Dinner Ideas|||Chicken parm, tacos, sloppy joe|||Blog idea|||Finished|||lowPriority|||04/23/2026|||True

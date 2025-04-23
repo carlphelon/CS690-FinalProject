@@ -54,7 +54,6 @@ public class ProjectOrganizerTests {
         var category2 = new Category("Short Story");
         var testproject2 = new ProjectData("testing 123", "test test test", category1, Progress.notStarted, Priority.mediumPriority, DateTime.Today.AddDays(310), user );
         var testproject3 = new ProjectData("testing 456", "test^3", category2, Progress.notStarted, Priority.mediumPriority, DateTime.Today.AddDays(310), user );
-
         
         testprojectorganizer.saveProject(testproject2);
         testprojectorganizer.saveProject(testproject3);
@@ -81,7 +80,50 @@ public class ProjectOrganizerTests {
         var filteredprojects = testprojectorganizer.FilterByPriority("Medium Priority");
 
         Assert.Empty(filteredprojects);
-
     }  
-    
+    [Fact]
+    public void Test_RemoveProject() {
+        
+        //initiate variables
+        var storage = new ProjectCollection();
+        var testprojectorganizer = new ProjectOrganizer(storage);
+        var user = new User("Sophia");
+        var category1 = new Category("Blog idea");
+        var category2 = new Category("Short Story");
+        var testproject1 = new ProjectData("testing 123", "test test test", category1, Progress.notStarted, Priority.mediumPriority, DateTime.Today.AddDays(310), user );
+        var testproject2 = new ProjectData("testing 456", "test^3", category2, Progress.notStarted, Priority.mediumPriority, DateTime.Today.AddDays(310), user );
+
+        testprojectorganizer.saveProject(testproject1);
+        testprojectorganizer.saveProject(testproject2);
+
+        //remove project - do the thing
+        testprojectorganizer.RemoveProject("testing 456");
+
+        Assert.Single(storage.savedprojects);
+        Assert.DoesNotContain(storage.savedprojects, p => p.projectName =="testing 456");
+    }  
+    [Fact]
+    public void Test_FilterByPriority() {
+        
+        //initiate variables
+        var storage = new ProjectCollection();
+        var testprojectorganizer = new ProjectOrganizer(storage);
+        var user = new User("Sophia");
+        var category1 = new Category("Blog idea");
+        var category2 = new Category("Short Story");
+        var testproject1 = new ProjectData("testing 123", "test test test", category1, Progress.notStarted, Priority.mediumPriority, DateTime.Today.AddDays(310), user );
+        var testproject2 = new ProjectData("testing 456", "test^3", category2, Progress.Started, Priority.lowPriority, DateTime.Today.AddDays(310), user );
+        var testproject3 = new ProjectData("testing 789", "test*2-1", category2, Progress.inProgress, Priority.mediumPriority, DateTime.Today.AddDays(310), user );
+
+        testprojectorganizer.saveProject(testproject1);
+        testprojectorganizer.saveProject(testproject2);
+        testprojectorganizer.saveProject(testproject3);
+
+
+        //filter - do the thing
+        var filteredprojectlist = testprojectorganizer.FilterByPriority("mediumPriority");
+
+        Assert.Equal(2, filteredprojectlist.Count());
+        Assert.All(filteredprojectlist, p => Assert.Equal(Priority.mediumPriority, p.Priority));
+    }  
 }
