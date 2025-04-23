@@ -1,9 +1,2 @@
-sadfasdf|||sdfasdfas|||Blog idea|||Started|||mediumPriority|||05/05/2025
-dsafasdfas|||dfasdfa|||Drawing|||notStarted|||lowPriority|||05/05/2025
-rghdfg|||gfhdgf|||Drawing|||notStarted|||highPriority|||05/05/2025
-dfghdfgh|||dfgh|||Blog idea|||notStarted|||mediumPriority|||05/05/2025
-ghdfghd|||fdfghdfg|||Blog idea|||notStarted|||highPriority|||05/05/2025
-gfhfd|||d|||Blog idea|||notStarted|||highPriority|||05/05/2025
-dgfhgdf||||||Blog idea|||Started|||mediumPriority|||05/05/2025
-dsgsdhgf|||fdghfgh|||Drawing|||inProgress|||mediumPriority|||01/01/0001
-dfghdfh|||gfdhdfh|||Drawing|||Started|||lowPriority|||04/27/2025
+Ryan|||sdfgsdfhg|||Drawing|||Started|||mediumPriority|||04/22/2026
+cARLEIGH|||SDFG.|||Drawing|||Finished|||mediumPriority|||04/27/2202
