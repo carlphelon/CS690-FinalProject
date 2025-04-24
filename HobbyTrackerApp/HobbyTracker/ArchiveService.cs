@@ -39,7 +39,7 @@ public class ArchiveService {
 
                     projectOrganizer.SaveAlltoFile(); 
 
-                    AnsiConsole.MarkupLine($"[green]{project.ProjectName} was archived[/]"); 
+                    AnsiConsole.MarkupLine($"[palegreen1_1]{project.ProjectName}: archived[/]"); 
 
                 }   
             } 
