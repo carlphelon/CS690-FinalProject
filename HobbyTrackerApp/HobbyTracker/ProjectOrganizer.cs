@@ -65,7 +65,7 @@ public class ProjectOrganizer {
         table.AddColumn("Priority");
         table.AddColumn("Target Completion Date");
         table.AddColumn("Description");
-        table.AddColumn("Archived");                  
+        table.AddColumn("Archived?");                  
 
         foreach (var project in listofprojects) {
             

@@ -45,7 +45,7 @@ class Program
         appUI.View();
     
 
-        Console.WriteLine("Have a wonderful day :)");
+        AnsiConsole.MarkupLine("[hotpink3]Have a wonderful day :) [/]");
     }
 }
 
