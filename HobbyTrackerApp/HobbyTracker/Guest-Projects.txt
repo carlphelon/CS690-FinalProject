@@ -1,4 +1,9 @@
-Outlander|||Scotland 1945|||Short story|||Finished|||LowPriority|||04/27/2025|||False
-Lemon|||Realistic lemon|||Drawing|||NotStarted|||MediumPriority|||04/23/2026|||False
-Dinners|||Parm, taco, ceasar salad|||Blog idea|||Started|||HighPriority|||05/10/2025|||False
-archive|||archive this one|||Drawing|||InProgress|||LowPriority|||04/23/2026|||True
+Outlander|||Scotland 1945|||Short story|||Finished|||LowPriority|||04/27/2025|||True
+HarryPotter|||Harry Potter and Ginnie Weasley had the diary|||Short story|||Started|||MediumPriority|||04/27/2025|||False
+Rhapsody|||The bargainer and I made 300 deals|||Short story|||InProgress|||LowPriority|||04/27/2025|||False
+Lemon|||Realistic lemon|||Drawing|||NotStarted|||MediumPriority|||04/23/2026|||True
+Cupcake|||Cupcake and monkey combo|||Drawing|||NotStarted|||MediumPriority|||04/23/2026|||False
+Lemon|||Realistic lemon|||Drawing|||NotStarted|||HighPriority|||04/23/2026|||True
+Weeknight Easy Dinners|||Chicken thigh and rice, beef tacos, sushi bake|||Blog idea|||Started|||HighPriority|||05/10/2025|||False
+archive|||archive this one|||Blog|||InProgress|||LowPriority|||04/23/2026|||True
+Healthy Snack Ideas|||Cucumbers and ranch mix, pretzel chips and chocolate hummus, and baked carrots with sprinkled cheese|||Blog idea|||Started|||MediumPriority|||04/24/2026|||False
